@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Từ Vựng Pre-A1 - HIU_DBP_PRE_2601</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts: Fredoka & Nunito for friendly, rounded design -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#4F46E5',
+                            lightblue: '#06B6D4',
+                            yellow: '#F59E0B',
+                            green: '#10B981',
+                            pink: '#EC4899',
+                            purple: '#8B5CF6',
+                            bg: '#F8FAFC'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* CSS 3D Card Flip Animation */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        
+        /* Smooth transitions */
+        .card-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col selection:bg-indigo-200">
+
+    <!-- TOP HEADER / NAVIGATION -->
+    <header class="bg-white border-b-2 border-slate-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('flashcards')">
+                <div class="w-12 h-12 bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-md shadow-indigo-200">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-display font-bold text-slate-800 tracking-tight leading-none">HIU_DBP_PRE_2601</h1>
+                    <p class="text-xs text-indigo-600 font-bold uppercase tracking-wider mt-1">Luyện Tập Từ Vựng Pre-A1</p>
+                </div>
+            </div>
+
+            <!-- TAB BUTTONS -->
+            <nav class="flex items-center gap-1 sm:gap-2 overflow-x-auto w-full md:w-auto py-1">
+                <button id="nav-flashcards" onclick="switchTab('flashcards')" class="nav-btn active flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold text-sm transition-all whitespace-nowrap bg-indigo-50 text-indigo-600 border-2 border-indigo-200">
+                    <i class="fa-solid fa-layer-group text-lg"></i>
+                    <span>Thẻ Từ Vựng</span>
+                </button>
+                <button id="nav-matching" onclick="switchTab('matching')" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold text-sm transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100 border-2 border-transparent">
+                    <i class="fa-solid fa-puzzle-piece text-lg text-emerald-500"></i>
+                    <span>Nối Từ</span>
+                </button>
+                <button id="nav-quiz" onclick="switchTab('quiz')" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold text-sm transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100 border-2 border-transparent">
+                    <i class="fa-solid fa-circle-question text-lg text-amber-500"></i>
+                    <span>Trắc Nghiệm</span>
+                </button>
+                <button id="nav-spelling" onclick="switchTab('spelling')" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold text-sm transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100 border-2 border-transparent">
+                    <i class="fa-solid fa-arrow-down-a-z text-lg text-rose-500"></i>
+                    <span>Xếp Chữ</span>
+                </button>
+                <button id="nav-listening" onclick="switchTab('listening')" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold text-sm transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100 border-2 border-transparent">
+                    <i class="fa-solid fa-headphones text-lg text-cyan-500"></i>
+                    <span>Luyện Nghe Phản Xạ</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6">
+
+        <!-- ================= TAB 1: FLASHCARDS ================= -->
+        <section id="tab-flashcards" class="space-y-6">
+            <div class="flex justify-between items-center px-2 max-w-md mx-auto">
+                <span class="text-slate-500 font-extrabold text-sm bg-slate-200/70 px-3 py-1 rounded-full" id="card-counter">Từ 1 / 52</span>
+                <div class="flex gap-2">
+                    <button onclick="speakCurrentWord()" class="px-3.5 py-1.5 bg-indigo-100 text-indigo-700 rounded-xl text-sm font-bold hover:bg-indigo-200 transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-volume-high"></i> Phát âm
+                    </button>
+                    <button onclick="shuffleFlashcards()" class="px-3.5 py-1.5 bg-slate-200/70 text-slate-700 rounded-xl text-sm font-bold hover:bg-slate-300/70 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-shuffle"></i> Xáo trộn
+                    </button>
+                </div>
+            </div>
+
+            <!-- Flashcard Display Area -->
+            <div class="max-w-md mx-auto h-96 perspective-1000 cursor-pointer" onclick="flipCard()">
+                <div id="flashcard-inner" class="card-inner relative w-full h-full transform-style-3d shadow-xl rounded-3xl border-2 border-slate-200/80 bg-white">
+                    
+                    <!-- FRONT OF CARD -->
+                    <div class="absolute inset-0 backface-hidden flex flex-col items-center justify-between p-6 bg-gradient-to-b from-white via-slate-50/50 to-indigo-50/30 rounded-3xl">
+                        <div class="w-full flex justify-between items-center text-xs font-bold text-slate-400">
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full font-display">HIU_DBP_PRE_2601</span>
+                            <span>Chạm để lật <i class="fa-solid fa-rotate text-indigo-400"></i></span>
+                        </div>
+                        
+                        <div class="text-center my-auto space-y-3">
+                            <div id="card-emoji" class="text-7xl mb-2 drop-shadow-sm select-none">📦</div>
+                            <h2 id="card-english" class="text-3xl sm:text-4xl font-display font-bold text-slate-800 tracking-wide">Package</h2>
+                            <p id="card-phonetic" class="text-indigo-600 font-semibold text-lg bg-indigo-50 px-4 py-1 rounded-full inline-block">/ˈpæk.ɪdʒ/</p>
+                        </div>
+
+                        <div class="w-full text-center">
+                            <button onclick="event.stopPropagation(); speakCurrentWord();" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold shadow-md shadow-indigo-200 transition flex items-center justify-center gap-2 mx-auto">
+                                <i class="fa-solid fa-volume-high"></i> Nghe phát âm
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- BACK OF CARD -->
+                    <div class="absolute inset-0 backface-hidden rotate-y-180 flex flex-col items-center justify-between p-6 bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 text-white rounded-3xl">
+                        <div class="w-full flex justify-between items-center text-xs font-bold text-indigo-200">
+                            <span>NGHĨA TIẾNG VIỆT</span>
+                            <span>Chạm để lật lại <i class="fa-solid fa-rotate"></i></span>
+                        </div>
+
+                        <div class="text-center my-auto space-y-4">
+                            <h3 id="card-vietnamese" class="text-3xl font-display font-bold text-yellow-300 drop-shadow">Bưu kiện, kiện hàng</h3>
+                            <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 text-left max-w-xs mx-auto">
+                                <p class="text-xs uppercase text-indigo-200 font-bold mb-1">Ví dụ minh họa:</p>
+                                <p id="card-example" class="text-sm font-medium italic text-indigo-50">"I am sending a package to my friend."</p>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-indigo-200 font-semibold">
+                            Bấm các nút dưới đây để đổi từ khác
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Flashcard Control Buttons -->
+            <div class="flex justify-center items-center gap-4 max-w-md mx-auto pt-2">
+                <button onclick="prevCard()" class="flex-1 py-3 bg-white border-2 border-slate-200 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Từ trước
+                </button>
+                <button onclick="nextCard()" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold shadow-lg shadow-indigo-200 transition flex items-center justify-center gap-2">
+                    Từ tiếp <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: MATCHING GAME ================= -->
+        <section id="tab-matching" class="hidden space-y-6">
+            <div class="bg-emerald-50 border-2 border-emerald-200 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-display font-bold text-emerald-900 flex items-center gap-2">
+                        <i class="fa-solid fa-puzzle-piece text-emerald-600"></i> Trò Chơi Nối Từ
+                    </h2>
+                    <p class="text-sm text-emerald-700 font-medium">Chọn 1 từ Tiếng Anh và 1 nghĩa Tiếng Việt tương ứng để nối chúng lại với nhau!</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="bg-white px-4 py-2 rounded-xl border border-emerald-200 text-center">
+                        <span class="text-xs font-bold text-slate-400 block">ĐIỂM SỐ</span>
+                        <span id="matching-score" class="text-xl font-black text-emerald-600">0</span>
+                    </div>
+                    <button onclick="initMatchingGame()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition">
+                        <i class="fa-solid fa-rotate-right"></i> Chơi mới
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grid container for English & Vietnamese cards -->
+            <div id="matching-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <!-- Dynamic cards populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: MULTIPLE CHOICE QUIZ ================= -->
+        <section id="tab-quiz" class="hidden space-y-6">
+            <div class="bg-amber-50 border-2 border-amber-200 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-display font-bold text-amber-900 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-question text-amber-600"></i> Trắc Nghiệm Từ Vựng
+                    </h2>
+                    <p class="text-sm text-amber-700 font-medium">Chọn câu trả lời đúng nhất để hoàn thành câu!</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="bg-white px-4 py-2 rounded-xl border border-amber-200 text-center">
+                        <span class="text-xs font-bold text-slate-400 block">CÂU ĐÚNG</span>
+                        <span id="quiz-score" class="text-xl font-black text-amber-600">0/0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Card -->
+            <div class="max-w-2xl mx-auto bg-white border-2 border-slate-200 rounded-3xl p-6 shadow-sm space-y-6">
+                <div class="flex justify-between items-center text-sm font-bold text-slate-400 border-b border-slate-100 pb-3">
+                    <span id="quiz-progress-text">Câu hỏi 1/10</span>
+                    <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-display">Luyện tập Pre-A1</span>
+                </div>
+
+                <div class="space-y-3">
+                    <h3 id="quiz-question" class="text-xl sm:text-2xl font-bold text-slate-800 leading-snug">
+                        A baby sleeps in a _______.
+                    </h3>
+                </div>
+
+                <!-- Answer options -->
+                <div id="quiz-options" class="grid grid-cols-1 gap-3 pt-2">
+                    <!-- Dynamic option buttons -->
+                </div>
+
+                <!-- Feedback area -->
+                <div id="quiz-feedback" class="hidden p-4 rounded-2xl text-center font-bold text-sm"></div>
+
+                <div class="pt-2 flex justify-end">
+                    <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold shadow-md transition flex items-center gap-2">
+                        Câu tiếp theo <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: SPELLING / WORD BUILDER ================= -->
+        <section id="tab-spelling" class="hidden space-y-6">
+            <div class="bg-rose-50 border-2 border-rose-200 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-display font-bold text-rose-900 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-down-a-z text-rose-600"></i> Trò Chơi Xếp Chữ
+                    </h2>
+                    <p class="text-sm text-rose-700 font-medium">Nhấp chọn các chữ cái để ghép thành từ tiếng Anh hoàn chỉnh!</p>
+                </div>
+                <button onclick="initSpellingGame()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow transition">
+                    <i class="fa-solid fa-rotate-right"></i> Từ khác
+                </button>
+            </div>
+
+            <!-- Main Spelling Board -->
+            <div class="max-w-xl mx-auto bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm text-center space-y-6">
+                <!-- Word Prompt -->
+                <div class="space-y-2">
+                    <div id="spelling-emoji" class="text-6xl">📦</div>
+                    <p id="spelling-vietnamese" class="text-2xl font-black text-slate-800">Bưu kiện, kiện hàng</p>
+                    <button onclick="speakSpellingWord()" class="px-3.5 py-1 bg-rose-100 text-rose-700 rounded-full text-xs font-bold hover:bg-rose-200 transition inline-flex items-center gap-1.5 mt-1">
+                        <i class="fa-solid fa-volume-high"></i> Nghe phát âm
+                    </button>
+                </div>
+
+                <!-- Selected Letter Slots -->
+                <div id="spelling-answer-slots" class="flex flex-wrap justify-center gap-2 min-h-[60px] p-3 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl">
+                    <!-- Letter slots -->
+                </div>
+
+                <!-- Scrambled Letter Buttons -->
+                <div>
+                    <p class="text-xs font-bold text-slate-400 mb-3 uppercase">Chọn các chữ cái bên dưới:</p>
+                    <div id="spelling-letter-pool" class="flex flex-wrap justify-center gap-2">
+                        <!-- Scrambled letters -->
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex gap-3 justify-center pt-2">
+                    <button onclick="clearSpellingAnswer()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition">
+                        <i class="fa-solid fa-eraser"></i> Xóa làm lại
+                    </button>
+                    <button onclick="checkSpellingAnswer()" class="px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl shadow-md text-sm transition">
+                        <i class="fa-solid fa-check"></i> Kiểm tra
+                    </button>
+                </div>
+
+                <div id="spelling-feedback" class="hidden p-3 rounded-xl font-bold text-sm"></div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: LISTENING DRILL ================= -->
+        <section id="tab-listening" class="hidden space-y-6">
+            <div class="bg-cyan-50 border-2 border-cyan-200 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-display font-bold text-cyan-900 flex items-center gap-2">
+                        <i class="fa-solid fa-headphones text-cyan-600"></i> Luyện Nghe Phản Xạ
+                    </h2>
+                    <p class="text-sm text-cyan-700 font-medium">Bấm vào loa để nghe từ tiếng Anh, sau đó chọn đáp án chính xác!</p>
+                </div>
+                <div class="bg-white px-4 py-2 rounded-xl border border-cyan-200 text-center">
+                    <span class="text-xs font-bold text-slate-400 block">ĐIỂM SỐ</span>
+                    <span id="listening-score" class="text-xl font-black text-cyan-600">0</span>
+                </div>
+            </div>
+
+            <!-- Listening Card -->
+            <div class="max-w-xl mx-auto bg-white border-2 border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm text-center space-y-6">
+                <!-- Big Play Button -->
+                <div class="py-4">
+                    <button onclick="playListeningAudio()" class="w-24 h-24 bg-gradient-to-tr from-cyan-500 to-blue-600 hover:scale-105 active:scale-95 text-white rounded-full flex items-center justify-center text-4xl shadow-xl shadow-cyan-200 transition-all mx-auto">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <p class="text-xs font-bold text-slate-400 mt-3">Nhấn nút loa để phát lại âm thanh</p>
+                </div>
+
+                <!-- Target Options Grid -->
+                <div id="listening-options" class="grid grid-cols-2 gap-4">
+                    <!-- Dynamic Listening choices -->
+                </div>
+
+                <div id="listening-feedback" class="hidden p-3 rounded-xl font-bold text-sm"></div>
+
+                <div class="flex justify-end pt-2">
+                    <button id="listening-next-btn" onclick="nextListeningQuestion()" class="hidden px-5 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl font-bold transition">
+                        Câu tiếp <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8 text-center text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto px-4">
+            <p class="font-bold text-slate-600">Lớp Học: HIU_DBP_PRE_2601 • Pre-A1 English Learning Hub</p>
+            <p class="mt-1 text-slate-400">Ứng dụng hỗ trợ học từ vựng căn bản nhẹ nhàng, sinh động và trực quan</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ================= EXPANDED 50+ VOCABULARY DATASET (UNIFIED LIST) ================= */
+        const vocabularyData = [
+            { id: 'package', word: 'Package', phonetic: '/ˈpæk.ɪdʒ/', vietnamese: 'Bưu kiện, kiện hàng', emoji: '📦', example: 'I am sending a package to my friend.' },
+            { id: 'postage', word: 'Postage', phonetic: '/ˈpəʊ.stɪdʒ/', vietnamese: 'Bưu phí, cước gửi', emoji: '🏷️', example: 'The postage for this parcel is five dollars.' },
+            { id: 'change', word: 'Change', phonetic: '/tʃeɪndʒ/', vietnamese: 'Tiền thừa', emoji: '🪙', example: 'Here is your change after buying the item.' },
+            { id: 'cashier', word: 'Cashier', phonetic: '/kæʃˈɪər/', vietnamese: 'Nhân viên thu ngân', emoji: '👩‍💼', example: 'The cashier is counting the money.' },
+            { id: 'volunteer', word: 'Volunteer', phonetic: '/ˌvɒl.ənˈtɪər/', vietnamese: 'Tình nguyện viên', emoji: '🙋‍♂️', example: 'Many volunteers help clean up the park.' },
+            { id: 'interview', word: 'Interview', phonetic: '/ˈɪn.tə.vjuː/', vietnamese: 'Buổi phỏng vấn', emoji: '🗣️', example: 'She has a job interview at three o’clock.' },
+            { id: 'stroller', word: 'Stroller', phonetic: '/ˈstrəʊ.lər/', vietnamese: 'Xe đẩy trẻ em', emoji: '🛺', example: 'The baby rests inside the comfortable stroller.' },
+            { id: 'tuition', word: 'Tuition', phonetic: '/tjuːˈɪʃ.ən/', vietnamese: 'Học phí', emoji: '🎓', example: 'Students need to pay tuition before classes start.' },
+            { id: 'seat_belt', word: 'Seat belt', phonetic: '/ˈsiːt ˌbelt/', vietnamese: 'Dây an toàn', emoji: '🪑', example: 'Fasten your seat belt for safety.' },
+            { id: 'aisle', word: 'Aisle', phonetic: '/aɪl/', vietnamese: 'Lối đi giữa các dãy', emoji: '🚶‍♂️', example: 'You can find bread in aisle three.' },
+            { id: 'crib', word: 'Crib', phonetic: '/krɪb/', vietnamese: 'Nôi, cũi em bé', emoji: '🛏️', example: 'The sleeping baby is in her crib.' },
+            { id: 'scale', word: 'Scale', phonetic: '/skeɪl/', vietnamese: 'Cái cân', emoji: '⚖️', example: 'Put the box on the scale to weigh it.' },
+            { id: 'aspirin', word: 'Aspirin', phonetic: '/ˈæs.prɪn/', vietnamese: 'Thuốc giảm đau aspirin', emoji: '💊', example: 'He took an aspirin because he had a headache.' },
+            { id: 'driving_test', word: 'Driving test', phonetic: '/ˈdraɪ.vɪŋ test/', vietnamese: 'Kỳ thi lái xe', emoji: '🚘', example: 'She passed her driving test yesterday.' },
+            { id: 'community', word: 'Community', phonetic: '/kəˈmjuː.nə.ti/', vietnamese: 'Cộng đồng', emoji: '🤝', example: 'We live in a friendly community.' },
+            { id: 'community_college', word: 'Community college', phonetic: '/kəˈmjuː.nə.ti ˈkɒl.ɪdʒ/', vietnamese: 'Trường cao đẳng cộng đồng', emoji: '🏛️', example: 'He takes evening classes at the community college.' },
+            { id: 'registration', word: 'Registration', phonetic: '/ˌredʒ.ɪˈstreɪ.ʃən/', vietnamese: 'Sự đăng ký, việc ghi danh', emoji: '📝', example: 'Please complete your course registration today.' },
+            { id: 'weight', word: 'Weight', phonetic: '/weɪt/', vietnamese: 'Cân nặng, trọng lượng', emoji: '🏋️', example: 'Check the weight of the parcel on the scale.' },
+            { id: 'close', word: 'Close', phonetic: '/kləʊz/', vietnamese: 'Đóng cửa, khép lại', emoji: '🔒', example: 'The bank will close at five in the afternoon.' },
+            { id: 'apartment', word: 'Apartment', phonetic: '/əˈpɑːt.mənt/', vietnamese: 'Căn hộ', emoji: '🏢', example: 'Their new apartment has a bright living room.' },
+            { id: 'pack', word: 'Pack', phonetic: '/pæk/', vietnamese: 'Đóng gói, xếp đồ', emoji: '🧳', example: 'We need to pack our boxes before moving.' },
+            { id: 'busy', word: 'Busy', phonetic: '/ˈbɪz.i/', vietnamese: 'Bận rộn', emoji: '⏳', example: 'The store is very busy on Saturday mornings.' },
+            { id: 'shift', word: 'Shift', phonetic: '/ʃɪft/', vietnamese: 'Ca làm việc', emoji: '⏰', example: 'Her shift finishes at eight in the evening.' },
+            { id: 'department', word: 'Department', phonetic: '/dɪˈpɑːt.mənt/', vietnamese: 'Phòng ban, bộ phận', emoji: '🏬', example: 'He works in the customer service department.' },
+            { id: 'nervous', word: 'Nervous', phonetic: '/ˈnɜː.vəs/', vietnamese: 'Lo lắng, bồn chồn', emoji: '😬', example: 'It is normal to feel nervous before a presentation.' },
+            { id: 'excited', word: 'Excited', phonetic: '/ɪkˈsaɪ.tɪd/', vietnamese: 'Hào hứng, vui sướng', emoji: '😃', example: 'The children are excited about the weekend trip.' },
+            { id: 'beach', word: 'Beach', phonetic: '/biːtʃ/', vietnamese: 'Bãi biển', emoji: '🏖️', example: 'We love walking along the sandy beach.' },
+            { id: 'customer', word: 'Customer', phonetic: '/ˈkʌs.tə.mər/', vietnamese: 'Khách hàng', emoji: '🛍️', example: 'The customer is asking for information.' },
+            { id: 'clerk', word: 'Clerk', phonetic: '/klɑːk/', vietnamese: 'Nhân viên bán hàng / văn phòng', emoji: '👔', example: 'The clerk helped me find the right form.' },
+            { id: 'employee', word: 'Employee', phonetic: '/ɪmˈplɔɪ.iː/', vietnamese: 'Người làm thuê, nhân viên', emoji: '👨‍🏭', example: 'The company has over twenty employees.' },
+            { id: 'manager', word: 'Manager', phonetic: '/ˈmæn.ə.dʒər/', vietnamese: 'Người quản lý', emoji: '👨‍💼', example: 'The manager is in her office right now.' },
+            { id: 'block', word: 'Block', phonetic: '/blɒk/', vietnamese: 'Dãy nhà, khối nhà', emoji: '🧱', example: 'They walk two blocks to reach the supermarket.' },
+            { id: 'rainy', word: 'Rainy', phonetic: '/ˈreɪ.ni/', vietnamese: 'Trời mưa', emoji: '🌧️', example: 'It was a rainy afternoon so we stayed indoors.' },
+            { id: 'grandmother', word: 'Grandmother', phonetic: '/ˈɡræn.mʌð.ər/', vietnamese: 'Bà nội, bà ngoại', emoji: '👵', example: 'My grandmother likes cooking delicious meals.' },
+            { id: 'shopping_cart', word: 'Shopping cart', phonetic: '/ˈʃɒp.ɪŋ kɑːt/', vietnamese: 'Xe đẩy mua hàng', emoji: '🛒', example: 'Fill the shopping cart with vegetables.' },
+            { id: 'line', word: 'Line', phonetic: '/laɪn/', vietnamese: 'Hàng người, dòng kẻ', emoji: '🚶‍♀️', example: 'People are waiting in line to buy tickets.' },
+            { id: 'cheap', word: 'Cheap', phonetic: '/tʃiːp/', vietnamese: 'Rẻ, không đắt', emoji: '🏷️', example: 'This shirt is very cheap and nice.' },
+            { id: 'expensive', word: 'Expensive', phonetic: '/ɪkˈspen.sɪv/', vietnamese: 'Đắt đỏ, tốn kém', emoji: '💎', example: 'Luxury cars are usually very expensive.' },
+            { id: 'coat', word: 'Coat', phonetic: '/kəʊt/', vietnamese: 'Áo khoác ngoài', emoji: '🧥', example: 'Wear a warm coat because it is cold.' },
+            { id: 'headache', word: 'Headache', phonetic: '/ˈhed.eɪk/', vietnamese: 'Cơn đau đầu', emoji: '🤕', example: 'Rest quietly if you have a headache.' },
+            { id: 'lightbulb', word: 'Lightbulb', phonetic: '/ˈlaɪt.bʌlb/', vietnamese: 'Bóng đèn', emoji: '💡', example: 'Please replace the old lightbulb in the hall.' },
+            { id: 'gas', word: 'Gas', phonetic: '/ɡæs/', vietnamese: 'Xăng dầu, khí gas', emoji: '⛽', example: 'We need to stop and get some gas for the car.' },
+            { id: 'truck', word: 'Truck', phonetic: '/trʌk/', vietnamese: 'Xe tải', emoji: '🚚', example: 'The large truck is carrying goods.' },
+            { id: 'mileage', word: 'Mileage', phonetic: '/ˈmaɪ.lɪdʒ/', vietnamese: 'Số dặm đã đi, hiệu suất nhiên liệu', emoji: '🛣️', example: 'Check the mileage recorded on the dashboard.' },
+            { id: 'mechanic', word: 'Mechanic', phonetic: '/məˈkæn.ɪk/', vietnamese: 'Thợ sửa xe, thợ cơ khí', emoji: '🔧', example: 'The mechanic is inspecting the engine.' },
+            { id: 'post_office', word: 'Post office', phonetic: '/pəʊst ˈɒf.ɪs/', vietnamese: 'Bưu điện', emoji: '🏣', example: 'She went to the post office to buy stamps.' },
+            { id: 'stamps', word: 'Stamps', phonetic: '/stæmps/', vietnamese: 'Tem thư', emoji: '✉️', example: 'Attach two stamps on the envelope.' },
+            { id: 'fee', word: 'Fee', phonetic: '/fiː/', vietnamese: 'Chi phí, lệ phí', emoji: '💵', example: 'There is a small fee for class registration.' },
+            { id: 'relax', word: 'Relax', phonetic: '/rɪˈlæks/', vietnamese: 'Thư giãn', emoji: '🧘', example: 'Listen to music to relax after work.' },
+            { id: 'move', word: 'Move', phonetic: '/muːv/', vietnamese: 'Chuyển nhà, di chuyển', emoji: '📦', example: 'They plan to move next month.' },
+            { id: 'useful', word: 'Useful', phonetic: '/ˈjuːs.fəl/', vietnamese: 'Hữu ích', emoji: '🛠️', example: 'Learning vocabulary is very useful.' },
+            { id: 'economical', word: 'Economical', phonetic: '/ˌiː.kəˈnɒm.ɪ.kəl/', vietnamese: 'Tiết kiệm', emoji: '💰', example: 'Taking the bus is an economical choice.' }
+        ];
+
+        /* ================= GLOBAL STATE VARIABLES ================= */
+        let filteredVocab = [...vocabularyData];
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+
+        let matchingScore = 0;
+        let selectedMatchingCards = [];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        let currentSpellingItem = null;
+        let spellingUserLetters = [];
+
+        let currentListeningIndex = 0;
+        let listeningScore = 0;
+
+        /* ================= PRACTICE-ORIENTED QUIZ DATA ================= */
+        const quizData = [
+            {
+                question: "If a baby is sleeping in the room, parents usually place them in a _______.",
+                options: ["crib", "shopping cart", "scale", "block"],
+                answer: 0,
+                explanation: "'Crib' nghĩa là nôi/cũi dành cho em bé."
+            },
+            {
+                question: "When you drive a car, you must fasten your _______ for safety.",
+                options: ["stroller", "seat belt", "aspirin", "mileage"],
+                answer: 1,
+                explanation: "'Seat belt' nghĩa là dây an toàn khi đi xe."
+            },
+            {
+                question: "She took an _______ because she had a headache.",
+                options: ["interview", "aspirin", "aisle", "tuition"],
+                answer: 1,
+                explanation: "'Aspirin' là thuốc giảm đau thường dùng khi bị đau đầu."
+            },
+            {
+                question: "Students pay _______ to enroll in college courses.",
+                options: ["tuition", "mileage", "postage", "scale"],
+                answer: 0,
+                explanation: "'Tuition' có nghĩa là học phí."
+            },
+            {
+                question: "A person who works at a job without receiving money is a _______.",
+                options: ["cashier", "volunteer", "manager", "clerk"],
+                answer: 1,
+                explanation: "'Volunteer' có nghĩa là tình nguyện viên."
+            },
+            {
+                question: "You can weigh heavy items at the post office using a _______.",
+                options: ["scale", "lightbulb", "block", "stroller"],
+                answer: 0,
+                explanation: "'Scale' nghĩa là cái cân."
+            },
+            {
+                question: "Before moving into a new apartment, you should _______ your belongings into boxes.",
+                options: ["relax", "pack", "close", "move"],
+                answer: 1,
+                explanation: "'Pack' nghĩa là đóng gói đồ đạc."
+            },
+            {
+                question: "If an item costs very little money, it is considered _______.",
+                options: ["expensive", "cheap", "busy", "rainy"],
+                answer: 1,
+                explanation: "'Cheap' nghĩa là giá rẻ."
+            }
+        ];
+
+        /* ================= LISTENING DRILL DATA (PRACTICE PHRASES & NUMBERS) ================= */
+        const listeningDrillData = [
+            { text: "Six thirty", display: "6:30 (Giờ)", options: ["6:13", "6:30", "7:30", "6:03"], answer: 1 },
+            { text: "Eighty-five pounds", display: "85 bảng Anh (Chi phí)", options: ["£65", "£85", "£55", "£75"], answer: 1 },
+            { text: "Package", display: "Bưu kiện", options: ["Package", "Postage", "Pass", "Pack"], answer: 0 },
+            { text: "Ten dollars", display: "10 đô la", options: ["$4", "$6", "$10", "$12"], answer: 2 },
+            { text: "Twelve thirty", display: "12:30 (Giờ)", options: ["11:30", "12:13", "12:30", "1:30"], answer: 2 },
+            { text: "Seat belt", display: "Dây an toàn", options: ["Seat belt", "Stroller", "Shopping cart", "Scale"], answer: 0 },
+            { text: "Community college", display: "Trường cao đẳng cộng đồng", options: ["High school", "Community college", "Post office", "Department"], answer: 1 }
+        ];
+
+        /* ================= AUDIO FX VIA WEB AUDIO API ================= */
+        function playAudioTone(freq, type, duration) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function playCorrectSound() {
+            playAudioTone(587.33, 'sine', 0.15); // D5
+            setTimeout(() => playAudioTone(880, 'sine', 0.25), 100); // A5
+        }
+
+        function playWrongSound() {
+            playAudioTone(220, 'sawtooth', 0.2);
+        }
+
+        /* ================= TEXT-TO-SPEECH VOICE ENGINE ================= */
+        let preferredVoice = null;
+
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                const voices = window.speechSynthesis.getVoices();
+                preferredVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel'))) 
+                              || voices.find(v => v.lang.startsWith('en-US')) 
+                              || voices.find(v => v.lang.startsWith('en'));
+            }
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+            loadVoices();
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                if (preferredVoice) utterance.voice = preferredVoice;
+                utterance.lang = 'en-US';
+                utterance.rate = 0.82; // Clear slow pace for Pre-A1 students
+                utterance.pitch = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        /* ================= TAB NAVIGATION ================= */
+        function switchTab(tabName) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-50', 'text-indigo-600', 'border-indigo-200');
+                btn.classList.add('text-slate-600', 'border-transparent');
+            });
+
+            const selectedTab = document.getElementById(`tab-${tabName}`);
+            const selectedBtn = document.getElementById(`nav-${tabName}`);
+            
+            if (selectedTab) selectedTab.classList.remove('hidden');
+            if (selectedBtn) {
+                selectedBtn.classList.remove('text-slate-600', 'border-transparent');
+                selectedBtn.classList.add('bg-indigo-50', 'text-indigo-600', 'border-indigo-200');
+            }
+
+            if (tabName === 'matching') initMatchingGame();
+            if (tabName === 'quiz') initQuiz();
+            if (tabName === 'spelling') initSpellingGame();
+            if (tabName === 'listening') initListeningDrill();
+        }
+
+        /* ================= TAB 1: FLASHCARDS LOGIC ================= */
+        function renderFlashcard() {
+            if (filteredVocab.length === 0) return;
+            const item = filteredVocab[currentCardIndex];
+            
+            const inner = document.getElementById('flashcard-inner');
+            inner.classList.remove('rotate-y-180');
+            isCardFlipped = false;
+
+            document.getElementById('card-emoji').innerText = item.emoji;
+            document.getElementById('card-english').innerText = item.word;
+            document.getElementById('card-phonetic').innerText = item.phonetic;
+            document.getElementById('card-vietnamese').innerText = item.vietnamese;
+            document.getElementById('card-example').innerText = `"${item.example}"`;
+
+            document.getElementById('card-counter').innerText = `Từ ${currentCardIndex + 1} / ${filteredVocab.length}`;
+        }
+
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            isCardFlipped = !isCardFlipped;
+            if (isCardFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % filteredVocab.length;
+            renderFlashcard();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + filteredVocab.length) % filteredVocab.length;
+            renderFlashcard();
+        }
+
+        function shuffleFlashcards() {
+            filteredVocab.sort(() => Math.random() - 0.5);
+            currentCardIndex = 0;
+            renderFlashcard();
+        }
+
+        function speakCurrentWord() {
+            if (filteredVocab[currentCardIndex]) {
+                speakText(filteredVocab[currentCardIndex].word);
+            }
+        }
+
+        /* ================= TAB 2: MATCHING GAME LOGIC ================= */
+        function initMatchingGame() {
+            matchingScore = 0;
+            document.getElementById('matching-score').innerText = matchingScore;
+            selectedMatchingCards = [];
+
+            const sample = [...vocabularyData].sort(() => Math.random() - 0.5).slice(0, 6);
+            
+            let cards = [];
+            sample.forEach(item => {
+                cards.push({ id: item.id, type: 'EN', text: item.word, emoji: item.emoji });
+                cards.push({ id: item.id, type: 'VI', text: item.vietnamese });
+            });
+
+            cards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('matching-grid');
+            grid.innerHTML = cards.map((c, idx) => `
+                <div id="match-card-${idx}" onclick="handleMatchingClick(${idx}, '${c.id}', '${c.type}')" class="match-card bg-white border-2 border-slate-200 hover:border-emerald-400 p-4 rounded-2xl cursor-pointer text-center select-none shadow-sm transition-all flex flex-col items-center justify-center min-h-[100px]">
+                    ${c.emoji ? `<span class="text-3xl mb-1">${c.emoji}</span>` : ''}
+                    <span class="font-bold text-slate-800 text-sm sm:text-base">${c.text}</span>
+                </div>
+            `).join('');
+        }
+
+        function handleMatchingClick(idx, id, type) {
+            const cardEl = document.getElementById(`match-card-${idx}`);
+            if (cardEl.classList.contains('matched') || cardEl.classList.contains('bg-indigo-100')) return;
+
+            cardEl.classList.add('bg-indigo-100', 'border-indigo-500');
+            selectedMatchingCards.push({ idx, id, type, element: cardEl });
+
+            if (selectedMatchingCards.length === 2) {
+                const [first, second] = selectedMatchingCards;
+
+                if (first.id === second.id && first.type !== second.type) {
+                    setTimeout(() => {
+                        first.element.className = "match-card matched bg-emerald-100 border-2 border-emerald-400 p-4 rounded-2xl text-center select-none min-h-[100px] flex flex-col items-center justify-center opacity-60";
+                        second.element.className = "match-card matched bg-emerald-100 border-2 border-emerald-400 p-4 rounded-2xl text-center select-none min-h-[100px] flex flex-col items-center justify-center opacity-60";
+                        matchingScore += 10;
+                        document.getElementById('matching-score').innerText = matchingScore;
+                        
+                        if (document.querySelectorAll('.match-card.matched').length === 12) {
+                            triggerConfetti();
+                        }
+                    }, 300);
+                } else {
+                    setTimeout(() => {
+                        first.element.classList.remove('bg-indigo-100', 'border-indigo-500');
+                        second.element.classList.remove('bg-indigo-100', 'border-indigo-500');
+                        first.element.classList.add('bg-rose-100', 'border-rose-400');
+                        second.element.classList.add('bg-rose-100', 'border-rose-400');
+                        
+                        setTimeout(() => {
+                            first.element.classList.remove('bg-rose-100', 'border-rose-400');
+                            second.element.classList.remove('bg-rose-100', 'border-rose-400');
+                        }, 400);
+                    }, 300);
+                }
+                selectedMatchingCards = [];
+            }
+        }
+
+        /* ================= TAB 3: QUIZ LOGIC ================= */
+        function initQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quiz-progress-text').innerText = `Câu hỏi ${currentQuizIndex + 1}/${quizData.length}`;
+            document.getElementById('quiz-score').innerText = `${quizScore}/${quizData.length}`;
+            document.getElementById('quiz-question').innerText = q.question;
+
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.add('hidden');
+
+            const nextBtn = document.getElementById('quiz-next-btn');
+            nextBtn.classList.add('hidden');
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = q.options.map((opt, idx) => `
+                <button onclick="selectQuizOption(${idx})" class="quiz-opt-btn w-full text-left px-5 py-3.5 bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-2xl font-bold text-slate-800 transition flex items-center justify-between">
+                    <span>${String.fromCharCode(65 + idx)}. ${opt}</span>
+                    <i class="fa-regular fa-circle text-slate-300"></i>
+                </button>
+            `).join('');
+        }
+
+        function selectQuizOption(optIdx) {
+            const q = quizData[currentQuizIndex];
+            const optBtns = document.querySelectorAll('.quiz-opt-btn');
+            optBtns.forEach(btn => btn.disabled = true);
+
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+
+            if (optIdx === q.answer) {
+                quizScore++;
+                optBtns[optIdx].className = "quiz-opt-btn w-full text-left px-5 py-3.5 bg-emerald-100 border-2 border-emerald-500 rounded-2xl font-bold text-emerald-900 transition flex items-center justify-between";
+                optBtns[optIdx].querySelector('i').className = "fa-solid fa-circle-check text-emerald-600 text-xl";
+                
+                feedback.className = "p-4 rounded-2xl text-center font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-200";
+                feedback.innerText = ` Chính xác! ${q.explanation}`;
+            } else {
+                optBtns[optIdx].className = "quiz-opt-btn w-full text-left px-5 py-3.5 bg-rose-100 border-2 border-rose-400 rounded-2xl font-bold text-rose-900 transition flex items-center justify-between";
+                optBtns[optIdx].querySelector('i').className = "fa-solid fa-circle-xmark text-rose-600 text-xl";
+                
+                optBtns[q.answer].className = "quiz-opt-btn w-full text-left px-5 py-3.5 bg-emerald-50 border-2 border-emerald-400 rounded-2xl font-bold text-emerald-800 transition flex items-center justify-between";
+
+                feedback.className = "p-4 rounded-2xl text-center font-bold text-sm bg-rose-100 text-rose-800 border border-rose-200";
+                feedback.innerText = ` Chưa đúng! ${q.explanation}`;
+            }
+
+            document.getElementById('quiz-score').innerText = `${quizScore}/${quizData.length}`;
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            if (currentQuizIndex < quizData.length - 1) {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            } else {
+                triggerConfetti();
+                alert(`Chúc mừng lớp HIU_DBP_PRE_2601 đã hoàn thành bài trắc nghiệm!\nKết quả: ${quizScore}/${quizData.length} câu đúng.`);
+                initQuiz();
+            }
+        }
+
+        /* ================= TAB 4: SPELLING LOGIC ================= */
+        function initSpellingGame() {
+            const validWords = vocabularyData.filter(v => !v.word.includes(' '));
+            currentSpellingItem = validWords[Math.floor(Math.random() * validWords.length)];
+            spellingUserLetters = [];
+
+            document.getElementById('spelling-emoji').innerText = currentSpellingItem.emoji;
+            document.getElementById('spelling-vietnamese').innerText = currentSpellingItem.vietnamese;
+
+            const feedback = document.getElementById('spelling-feedback');
+            feedback.classList.add('hidden');
+
+            renderSpellingSlots();
+            renderSpellingPool();
+        }
+
+        function renderSpellingSlots() {
+            const slotsContainer = document.getElementById('spelling-answer-slots');
+            slotsContainer.innerHTML = '';
+
+            for (let i = 0; i < currentSpellingItem.word.length; i++) {
+                const char = spellingUserLetters[i] || '';
+                slotsContainer.innerHTML += `
+                    <div onclick="removeSpellingLetter(${i})" class="w-10 h-12 bg-white border-2 ${char ? 'border-indigo-500 text-indigo-700 shadow-sm' : 'border-slate-300'} rounded-xl flex items-center justify-center text-xl font-black cursor-pointer hover:bg-slate-100 transition">
+                        ${char.toUpperCase()}
+                    </div>
+                `;
+            }
+        }
+
+        function renderSpellingPool() {
+            const poolContainer = document.getElementById('spelling-letter-pool');
+            let letters = currentSpellingItem.word.toLowerCase().split('');
+            letters.sort(() => Math.random() - 0.5);
+
+            poolContainer.innerHTML = letters.map((ltr, idx) => `
+                <button id="spell-pool-${idx}" onclick="addSpellingLetter('${ltr}', ${idx})" class="w-10 h-12 bg-rose-50 border-2 border-rose-200 hover:border-rose-400 text-rose-800 rounded-xl font-extrabold text-lg shadow-sm active:scale-95 transition">
+                    ${ltr.toUpperCase()}
+                </button>
+            `).join('');
+        }
+
+        function addSpellingLetter(ltr, poolIdx) {
+            if (spellingUserLetters.length < currentSpellingItem.word.length) {
+                spellingUserLetters.push(ltr);
+                document.getElementById(`spell-pool-${poolIdx}`).disabled = true;
+                document.getElementById(`spell-pool-${poolIdx}`).classList.add('opacity-30');
+                renderSpellingSlots();
+            }
+        }
+
+        function removeSpellingLetter(index) {
+            if (spellingUserLetters[index]) {
+                spellingUserLetters = [];
+                renderSpellingSlots();
+                renderSpellingPool();
+            }
+        }
+
+        function clearSpellingAnswer() {
+            spellingUserLetters = [];
+            renderSpellingSlots();
+            renderSpellingPool();
+        }
+
+        function checkSpellingAnswer() {
+            const userWord = spellingUserLetters.join('').toLowerCase();
+            const targetWord = currentSpellingItem.word.toLowerCase();
+            const feedback = document.getElementById('spelling-feedback');
+            feedback.classList.remove('hidden');
+
+            if (userWord === targetWord) {
+                feedback.className = "p-3 rounded-xl font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-200";
+                feedback.innerText = ` Chính xác! Từ đúng là: ${currentSpellingItem.word.toUpperCase()}`;
+                speakText(currentSpellingItem.word);
+                triggerConfetti();
+            } else {
+                feedback.className = "p-3 rounded-xl font-bold text-sm bg-rose-100 text-rose-800 border border-rose-200";
+                feedback.innerText = ` Chưa chính xác. Bấm "Xóa làm lại" để thử lại nhé!`;
+            }
+        }
+
+        function speakSpellingWord() {
+            if (currentSpellingItem) speakText(currentSpellingItem.word);
+        }
+
+        /* ================= TAB 5: LISTENING DRILL LOGIC ================= */
+        function initListeningDrill() {
+            currentListeningIndex = 0;
+            listeningScore = 0;
+            renderListeningQuestion();
+        }
+
+        function renderListeningQuestion() {
+            const item = listeningDrillData[currentListeningIndex];
+            document.getElementById('listening-score').innerText = listeningScore;
+
+            const feedback = document.getElementById('listening-feedback');
+            feedback.classList.add('hidden');
+            document.getElementById('listening-next-btn').classList.add('hidden');
+
+            const container = document.getElementById('listening-options');
+            container.innerHTML = item.options.map((opt, idx) => `
+                <button onclick="checkListeningAnswer(${idx})" class="listen-opt-btn p-4 bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-2xl font-bold text-slate-800 text-lg transition shadow-sm">
+                    ${opt}
+                </button>
+            `).join('');
+
+            setTimeout(() => playListeningAudio(), 300);
+        }
+
+        function playListeningAudio() {
+            const item = listeningDrillData[currentListeningIndex];
+            speakText(item.text);
+        }
+
+        function checkListeningAnswer(selectedIdx) {
+            const item = listeningDrillData[currentListeningIndex];
+            const optBtns = document.querySelectorAll('.listen-opt-btn');
+            optBtns.forEach(btn => btn.disabled = true);
+
+            const feedback = document.getElementById('listening-feedback');
+            feedback.classList.remove('hidden');
+
+            if (selectedIdx === item.answer) {
+                listeningScore += 10;
+                document.getElementById('listening-score').innerText = listeningScore;
+                optBtns[selectedIdx].className = "listen-opt-btn p-4 bg-emerald-100 border-2 border-emerald-500 rounded-2xl font-black text-emerald-800 text-lg shadow-sm";
+                
+                feedback.className = "p-3 rounded-xl font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-200";
+                feedback.innerText = ` Giỏi lắm! Bạn đã nghe đúng: "${item.text}" (${item.display})`;
+            } else {
+                optBtns[selectedIdx].className = "listen-opt-btn p-4 bg-rose-100 border-2 border-rose-400 rounded-2xl font-black text-rose-800 text-lg shadow-sm";
+                optBtns[item.answer].className = "listen-opt-btn p-4 bg-emerald-50 border-2 border-emerald-400 rounded-2xl font-black text-emerald-800 text-lg shadow-sm";
+
+                feedback.className = "p-3 rounded-xl font-bold text-sm bg-rose-100 text-rose-800 border border-rose-200";
+                feedback.innerText = ` Chưa đúng rồi. Từ đúng bạn đã nghe là: "${item.text}" (${item.display})`;
+            }
+
+            document.getElementById('listening-next-btn').classList.remove('hidden');
+        }
+
+        function nextListeningQuestion() {
+            if (currentListeningIndex < listeningDrillData.length - 1) {
+                currentListeningIndex++;
+                renderListeningQuestion();
+            } else {
+                triggerConfetti();
+                alert(` Chúc mừng bạn đã hoàn thành bài luyện nghe!\nTổng điểm: ${listeningScore}`);
+                initListeningDrill();
+            }
+        }
+
+        /* ================= UTILITY: CONFETTI ================= */
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        /* ================= INITIALIZATION ON LOAD ================= */
+        window.onload = function() {
+            renderFlashcard();
+        };
+    </script>
+</body>
+</html>
